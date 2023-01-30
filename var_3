@@ -49,4 +49,4 @@ class Circle { //Объявляем класс Circle
         Circle(double x = 0.0, double y = 0.0, double radius = 5.0)
             : x0(x), y0(y), r(radius) {}
  
-};
+}

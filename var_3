@@ -1,0 +1,130 @@
+#include <iostream> 
+#define _USE_MATH_DEFINES 
+#include <cmath>
+ 
+    using namespace std;
+ 
+class Circle { //Объявляем класс Circle
+ 
+    private:
+ 
+        double x0, y0; //Приватные поля класса
+        double r; //Приватное поле класса
+ 
+    public:
+ 
+        //Сеттеры
+ 
+        void setCircleCenter(double x, double y) { //Задаем координаты центра круга
+            x0 = x;
+            y0 = y;
+        }
+ 
+        void setCircleRadius(double radius) { //Задаем радиус центра круга
+            if (radius > 0) {
+                r = radius;
+            } else {
+                cerr << "Unable to set circle radius!\n";
+            }
+        }
+ 
+        //Геттеры
+    
+        double getCircleRadius() {
+            return r;
+        }
+    
+        //Остальные методы
+    
+        double calcCircleSquare() { //Функция вычисления площади круга
+            if (r > 0) {
+                return M_PI * pow(getCircleRadius(), 2);
+            } else {
+                cerr << "Unable to get circle square!\n";
+            }
+        }
+        
+        //Конструктор по умолчанию
+        
+        Circle(double x = 0.0, double y = 0.0, double radius = 5.0)
+            : x0(x), y0(y), r(radius) {}
+ 
+};
+ 
+class Cylinder: public Circle { //Класс-потомок (цилиндр)
+ 
+    private:
+ 
+        double h; //Приватное поле класса
+ 
+    public:
+ 
+        //Сеттеры
+ 
+        void setCylinderCoords(double x, double y) {
+            setCircleCenter(x, y);
+        }
+ 
+        void setCylinderBaseRadius(double radius) {
+            setCircleRadius(radius);
+        }
+    
+        void setCylinderHeight(double height) {
+            if (h > 0) {
+                h = height;
+            } else {
+                cerr << "Unable to set cylinder height!\n";
+            }
+        }
+        
+        //Остальные методы
+    
+        double calcCylinderBaseSquare() { //Функция вычисления площади основания цилиндра
+            return calcCircleSquare();
+        }
+    
+        double calcCylinderSideFaceSquare() { //Функция вычисления площади боковой поверхности цилиндра
+            return 2 * M_PI * getCircleRadius() * h;
+        }
+    
+        double calcCylinderTotalArea() { //Функция вычисления площади полной поверхности цилиндра
+            return 2 * M_PI * getCircleRadius() * (h + getCircleRadius());
+        }
+    
+        double calcCylinderVolume() { //Функция вычисления объема цилиндра
+            return M_PI * pow(getCircleRadius(), 2) * h;
+        }
+        
+        //Конструктор по умолчанию
+        
+        Cylinder(double height = 5.0) //Будет также вызван конструктор базового класса
+            : h(height) {}
+            
+        //Деструктор
+        
+        ~Cylinder() {
+            cout << "Cylinder object has been deleted!\n";  
+        }
+};
+ 
+int main() {
+    Cylinder* obj1 = new Cylinder(); //Задаем значения через конструктор по умолчанию
+    cout << "Output of the program #1:\n\n";
+    cout << "Cylinder base square: " << obj1->calcCylinderBaseSquare() << "\n"; //Вычисляем площадь основания цилиндра
+    cout << "Cylinder side face square: " << obj1->calcCylinderSideFaceSquare() << "\n"; //Вычисляем площадь боковой поверхности цилиндра 
+    cout << "Cylinder total area: " << obj1->calcCylinderTotalArea() << "\n"; //Вычисляем площадь полной поверхности цилиндра 
+    cout << "Cylinder volume: " << obj1->calcCylinderVolume() << "\n"; //Вычисляем объем цилиндра
+    delete obj1;
+    Cylinder* obj2 = new Cylinder; //Просто создаем объект типа Cylinder
+    cout << "\nOutput of the program #2:\n\n";
+    obj2->setCylinderCoords(10, 10); //Задаем координаты цилиндра
+    obj2->setCylinderBaseRadius(10.85); //Задаем радиус основания цилиндра
+    obj2->setCylinderHeight(15.29); //Задаем высоту цилиндра
+    cout << "Cylinder base square: " << obj2->calcCylinderBaseSquare() << "\n"; //Вычисляем площадь основания цилиндра
+    cout << "Cylinder side face square: " << obj2->calcCylinderSideFaceSquare() << "\n"; //Вычисляем площадь боковой поверхности цилиндра 
+    cout << "Cylinder total area: " << obj2->calcCylinderTotalArea() << "\n"; //Вычисляем площадь полной поверхности цилиндра 
+    cout << "Cylinder volume: " << obj2->calcCylinderVolume() << "\n"; //Вычисляем объем цилиндра
+    delete obj2;
+    system("pause");
+    return 0;
+}
